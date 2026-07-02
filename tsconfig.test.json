@@ -1,11 +1,16 @@
 {
   "extends": "./tsconfig.node.json",
   "compilerOptions": {
-    "types": ["node", "vitest/globals"],
+    "types": [
+      "node",
+      "vitest/globals"
+    ],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "allowImportingTsExtensions": false,
-    "noEmit": true
+    "noEmit": true,
   },
-  "include": ["tests"]
+  "include": [
+    "tests"
+  ]
 }

@@ -1,0 +1,44 @@
+{
+  "name": "button-carousel",
+  "version": "0.1.0",
+  "description": "A lightweight, framework-agnostic button carousel for images, GIFs, and videos.",
+  "type": "module",
+  "license": "MIT",
+  "author": "",
+  "keywords": [
+    "carousel",
+    "button",
+    "gallery",
+    "media",
+    "vanilla-js",
+    "typescript"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --out-dir dist --clean",
+    "dev": "tsup src/index.ts --format esm,cjs --dts --out-dir dist --watch",
+    "typecheck": "tsc --noEmit -p tsconfig.app.json",
+    "example:dev": "npm --prefix example run dev",
+    "example:build": "npm --prefix example run build",
+    "test": "vitest run --config vitest.config.ts"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.1",
+    "happy-dom": "^20.10.6",
+    "tsup": "^8.5.1",
+    "typescript": "^5.7.2",
+    "vitest": "^4.1.9"
+  }
+}
