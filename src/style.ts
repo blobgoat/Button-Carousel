@@ -40,7 +40,7 @@ export const buttonCarouselStyles = `
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   gap: 16px;
   width: 100%;
@@ -75,8 +75,8 @@ export const buttonCarouselStyles = `
   border-radius: 999px;
   overflow: hidden;
   cursor: pointer;
-  background-color: #111;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.12);
+  background-color: transparent;
+  box-shadow: 0 15px 4px rgba(0, 0, 0, 0.25);
   transform: translateY(0) scale(1);
   transition: box-shadow 320ms ease, transform 320ms ease;
   -webkit-tap-highlight-color: transparent;
@@ -88,7 +88,7 @@ export const buttonCarouselStyles = `
 }
 
 .button-carousel-button--active {
-  box-shadow: inset 0 6px 14px rgba(0, 0, 0, 0.4), inset 0 -2px 6px rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0 15px 4px rgba(0, 0, 0, 0.25);
   transform: translateY(1px) scale(0.97);
 }
 
@@ -105,7 +105,7 @@ export const buttonCarouselStyles = `
 }
 
 .button-carousel-button--active .button-carousel-media {
-  opacity: 0.2;
+  opacity: 0.25;
 }
 
 @media (max-width: 640px) {
