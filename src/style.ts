@@ -14,7 +14,7 @@ export const buttonCarouselStyles = `
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  gap: clamp(12px, 3vw, 36px);
 }
 
 .button-carousel-preview {
@@ -36,23 +36,60 @@ export const buttonCarouselStyles = `
   display: block;
 }
 
-.button-carousel-container {
+
+ .button-carousel-container {
+  --button-carousel-gap: 16px;
+  --button-carousel-button-width: calc((100% - (var(--button-carousel-gap) * 2)) / 4);
+  --button-carousel-shadow-y: clamp(6px, 2.6vw, 15px);
+  --button-carousel-shadow-blur: clamp(2px, 0.7vw, 4px);
+
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: flex-start;
   align-items: center;
-  gap: 16px;
+  gap: var(--button-carousel-gap);
   width: 100%;
-  padding: 8px 4px;
-  margin: 0;
+  padding: 8px 16px;
   box-sizing: border-box;
   overflow-x: hidden;
   overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
   scroll-behavior: smooth;
   list-style: none;
+}
+
+.button-carousel-button {
+  position: relative;
+  flex: 0 0 var(--button-carousel-button-width);
+  aspect-ratio: 2 / 1;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 999px;
+  overflow: hidden;
+  cursor: pointer;
+  background-color: transparent;
+
+  box-shadow:
+    0
+    var(--button-carousel-shadow-y)
+    var(--button-carousel-shadow-blur)
+    rgba(0, 0, 0, 0.25);
+
+  transform: translateY(0) scale(1);
+  transition: box-shadow 320ms ease, transform 320ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.button-carousel-button--active {
+  box-shadow:
+    inset 0
+    var(--button-carousel-shadow-y)
+    var(--button-carousel-shadow-blur)
+    rgba(0, 0, 0, 0.25);
+
+  transform: translateY(clamp(1px, 0.3vw, 3px)) scale(0.97);
 }
 
 .button-carousel-container::-webkit-scrollbar {
@@ -64,32 +101,9 @@ export const buttonCarouselStyles = `
   border-radius: 999px;
 }
 
-.button-carousel-button {
-  position: relative;
-  flex: 0 0 auto;
-  width: 220px;
-  height: 110px;
-  padding: 0;
-  margin: 0;
-  border: none;
-  border-radius: 999px;
-  overflow: hidden;
-  cursor: pointer;
-  background-color: transparent;
-  box-shadow: 0 15px 4px rgba(0, 0, 0, 0.25);
-  transform: translateY(0) scale(1);
-  transition: box-shadow 320ms ease, transform 320ms ease;
-  -webkit-tap-highlight-color: transparent;
-}
-
 .button-carousel-button:focus-visible {
   outline: 3px solid rgba(59, 130, 246, 0.6);
   outline-offset: 3px;
-}
-
-.button-carousel-button--active {
-  box-shadow: inset 0 15px 4px rgba(0, 0, 0, 0.25);
-  transform: translateY(1px) scale(0.97);
 }
 
 .button-carousel-media {
@@ -110,13 +124,8 @@ export const buttonCarouselStyles = `
 
 @media (max-width: 640px) {
   .button-carousel-container {
-    gap: 10px;
-    padding: 6px 2px;
-  }
-
-  .button-carousel-button {
-    width: 140px;
-    height: 74px;
+    --button-carousel-gap: 10px;
+    padding: 6px 12px;
   }
 }
 `;
