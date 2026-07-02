@@ -47,10 +47,11 @@ export const buttonCarouselStyles = `
   padding: 8px 4px;
   margin: 0;
   box-sizing: border-box;
-  overflow-x: auto;
+  overflow-x: hidden;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
+  scroll-behavior: smooth;
   list-style: none;
 }
 

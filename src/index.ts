@@ -201,7 +201,34 @@ export function createButtonCarousel(options: ButtonCarouselOptions): ButtonCaro
       });
     }
   }
+  /**
+   * Centers the button at `index` in the viewport.
+   * @param index the index of the button to center
+   * @returns nothing
+   */
+  function centerButton(index: number): void {
+    const button = buttons[index];
 
+    if (!button) {
+      return;
+    }
+
+    const targetScrollLeft =
+      button.offsetLeft -
+      wrapper.clientWidth / 2 +
+      button.offsetWidth / 2;
+
+    wrapper.scrollTo({
+      left: targetScrollLeft,
+      behavior: "smooth",
+    });
+  }
+
+  /**
+   * activates the button at `index`, updating the preview and button states.
+   * @param index the slide that should be active
+   * @returns nothing
+   */
   function setActive(index: number): void {
     const nextIndex = clampIndex(index, items.length);
     if (nextIndex === activeIndex && buttons[nextIndex]?.classList.contains(BUTTON_ACTIVE_CLASS)) {
@@ -219,6 +246,8 @@ export function createButtonCarousel(options: ButtonCarouselOptions): ButtonCaro
       nextButton.setAttribute("aria-pressed", "true");
     }
     renderPreview(activeIndex);
+    //centers button to enable scrolling
+    centerButton(activeIndex);
   }
 
   let destroyed = false;
@@ -250,4 +279,6 @@ export function createButtonCarousel(options: ButtonCarouselOptions): ButtonCaro
 
 
 }
+
+
 
