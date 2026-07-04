@@ -11,9 +11,9 @@ function image(seed: string): ButtonCarouselItem {
   };
 }
 
-const GIF_SRC = "https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif";
-const VIDEO_SRC = "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4";
-const VIDEO_POSTER = "https://picsum.photos/seed/flower-poster/400/300";
+const GIF_SRC: string = "https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif";
+const VIDEO_SRC: string = "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4";
+const VIDEO_POSTER: string = "https://picsum.photos/seed/flower-poster/400/300";
 
 function gif(seed = "earth"): ButtonCarouselItem {
   return { type: "gif", src: GIF_SRC, alt: `${seed} gif` };
@@ -90,26 +90,26 @@ const sections: SectionConfig[] = [
   },
 ];
 
-const sectionsRoot = document.getElementById("sections");
+const sectionsRoot: HTMLElement | null = document.getElementById("sections");
 
 if (!sectionsRoot) {
   throw new Error("#sections root element not found");
 }
 
 for (const section of sections) {
-  const sectionEl = document.createElement("section");
+  const sectionEl: HTMLElement = document.createElement("section");
   sectionEl.className = "demo-section";
 
-  const heading = document.createElement("h2");
+  const heading: HTMLElement = document.createElement("h2");
   heading.textContent = section.title;
   sectionEl.appendChild(heading);
 
-  const description = document.createElement("p");
+  const description: HTMLElement = document.createElement("p");
   description.className = "description";
   description.textContent = section.description;
   sectionEl.appendChild(description);
 
-  const slot = document.createElement("div");
+  const slot: HTMLElement = document.createElement("div");
   slot.className = "demo-carousel-slot";
   sectionEl.appendChild(slot);
 

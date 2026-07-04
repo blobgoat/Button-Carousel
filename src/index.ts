@@ -81,7 +81,12 @@ function resolveImageSrc(src: string | { src: string }): string {
     return src;
   }
 }
-
+/**
+ * Clamps an index to the valid range [0, length).
+ * @param index @type number The index to clamp
+ * @param length @type number The length of the array
+ * @returns @type number The clamped index
+ */
 function clampIndex(index: number, length: number): number {
   if (length <= 0) return 0;
   return Math.min(Math.max(index, 0), length - 1);
@@ -92,7 +97,7 @@ function createMediaElement(
   className: string = MEDIA_CLASS
 ): HTMLImageElement | HTMLVideoElement {
   if (item.type === "video") {
-    const video = document.createElement("video");
+    const video: HTMLVideoElement = document.createElement("video");
     video.className = className;
     video.src = item.src;
     video.muted = true;
@@ -116,7 +121,7 @@ function createMediaElement(
     return video;
   }
 
-  const img = document.createElement("img");
+  const img: HTMLImageElement = document.createElement("img");
   img.className = className;
   img.src = item.type === "image" ? resolveImageSrc(item.src) : item.src;
   img.alt = item.alt ?? "";
@@ -136,17 +141,17 @@ export function createButtonCarousel(options: ButtonCarouselOptions): ButtonCaro
   //injects the default styles if necessary
   injectStyles();
 
-  let activeIndex = clampIndex(options.initialIndex ?? 0, items.length);
+  let activeIndex: number = clampIndex(options.initialIndex ?? 0, items.length);
 
-  const abortController = new AbortController();
+  const abortController: AbortController = new AbortController();
 
-  const root = document.createElement("div");
+  const root: HTMLElement = document.createElement("div");
   root.className = ROOT_CLASS;
 
-  const preview = document.createElement("div");
+  const preview: HTMLElement = document.createElement("div");
   preview.className = PREVIEW_CLASS;
 
-  const wrapper = document.createElement("div");
+  const wrapper: HTMLElement = document.createElement("div");
   wrapper.className = CONTAINER_CLASS;
 
   root.appendChild(preview);
@@ -157,12 +162,12 @@ export function createButtonCarousel(options: ButtonCarouselOptions): ButtonCaro
       throw new Error(`Invalid item at index ${index}: ${item}`);
     }
     console.log(`Creating button for item at index ${index}:`, item);
-    const button = document.createElement("button");
+    const button: HTMLButtonElement = document.createElement("button");
     button.type = "button";
     button.className = BUTTON_CLASS;
     button.setAttribute("aria-pressed", index === activeIndex ? "true" : "false");
 
-    const media = createMediaElement(item);
+    const media: HTMLImageElement | HTMLVideoElement = createMediaElement(item);
     button.appendChild(media);
 
     button.addEventListener(
@@ -208,7 +213,7 @@ export function createButtonCarousel(options: ButtonCarouselOptions): ButtonCaro
       return;
     }
 
-    const previewMedia = createMediaElement(item, PREVIEW_MEDIA_CLASS);
+    const previewMedia: HTMLImageElement | HTMLVideoElement = createMediaElement(item, PREVIEW_MEDIA_CLASS);
     preview.appendChild(previewMedia);
 
     if (previewMedia instanceof HTMLVideoElement) {
