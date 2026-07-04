@@ -61,7 +61,7 @@ export const buttonCarouselStyles = `
 .button-carousel-button {
   position: relative;
   flex: 0 0 var(--button-carousel-button-width);
-  aspect-ratio: 2 / 1;
+  aspect-ratio: 1.2 / 1;
   height: auto;
   padding: 0;
   margin: 0;
@@ -100,6 +100,7 @@ export const buttonCarouselStyles = `
 }
 .button-carousel-button--edge-end-end{
   flex-basis: calc(var(--button-carousel-button-width));
+  border-radius: 1000px 0px 1000px 60px;
   }
 
 .button-carousel-button--edge-start {
@@ -112,6 +113,8 @@ export const buttonCarouselStyles = `
 }
   .button-carousel-button--edge-start-start {
   flex-basis: calc(var(--button-carousel-button-width));
+  border-radius: 0px 1000px 60px 1000px;
+
   }
 
 .button-carousel-container::-webkit-scrollbar {
@@ -141,7 +144,7 @@ export const buttonCarouselStyles = `
 }
 
 .button-carousel-button--active .button-carousel-media {
-  opacity: 0.25;
+  opacity: 0.5;
 }
 
 @media (max-width: 640px) {
