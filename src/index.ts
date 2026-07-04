@@ -398,14 +398,17 @@ function updateEdgeButtons(activeIndex: number, buttons: HTMLButtonElement[]): v
       "button-carousel-button--edge-end"
     );
   }
-
-  if (startIndex === 0) {
+  //if the active index is less than or equal to 2 it guarentees that the end button is not visible
+  //we also simultaneously know that the start button is visible
+  //Scrolling behavior prioritizes the start button according to implementation (scroll checks beginning first) unable to change it to make it obvious
+  if (startIndex === 0 && activeIndex <= 2) {
 
     buttons[endIndex - 1].classList.add("button-carousel-button--edge-end-end");
     buttons[endIndex - 1].classList.add("button-carousel-button--edge-end");
   }
-
-  if (endIndex === buttons.length - 1) {
+  //if the active index is greater than 2 it guarentees that the start button is not visible Meaning we can't transform the start button
+  //if the active index is less than buttons.length - 3 it guarentees that the end button is visible
+  if (endIndex === buttons.length - 1 && activeIndex >= buttons.length - 3 && activeIndex > 2) {
     buttons[startIndex + 1].classList.add("button-carousel-button--edge-start-start");
     buttons[startIndex + 1].classList.add("button-carousel-button--edge-start");
   }
