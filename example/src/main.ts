@@ -73,6 +73,21 @@ const sections: SectionConfig[] = [
       "A carousel using 10 total items, mixing images, GIFs, and videos. Click different buttons to see the active state animate and shift.",
     items: tenMixedItems(),
   },
+  {
+    title: "photos 4",
+    description: "A carousel containing 4 images.",
+    items: IMAGE_SEEDS.slice(0, 4).map((seed) => image(seed)),
+  },
+  {
+    title: "photos 5",
+    description: "A carousel containing 5 images.",
+    items: IMAGE_SEEDS.slice(0, 5).map((seed) => image(seed)),
+  },
+  {
+    title: "photos 6",
+    description: "A carousel containing 6 images.",
+    items: IMAGE_SEEDS.slice(0, 6).map((seed) => image(seed)),
+  },
 ];
 
 const sectionsRoot = document.getElementById("sections");
