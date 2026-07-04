@@ -178,12 +178,16 @@ export function createButtonCarousel(options: ButtonCarouselOptions): ButtonCaro
     }
 
     wrapper.appendChild(button);
-    console.log(`Button created for item at index ${index}:`, button);
-    console.log("root appended:", container.contains(root));
-    console.log("wrapper children:", wrapper.children.length);
+    // console.log(`Button created for item at index ${index}:`, button);
+    // console.log("root appended:", container.contains(root));
+    // console.log("wrapper children:", wrapper.children.length);
     return button;
   });
-  console.log(buttons)
+
+  if (buttons.length < 5) {
+    //need to center the buttons on the screen
+    wrapper.style.justifyContent = "center";
+  }
   setActive(activeIndex);
   updateEdgeButtons(activeIndex, buttons);
 
