@@ -40,7 +40,7 @@ export const buttonCarouselStyles = `
  .button-carousel-container {
   --button-carousel-gap: 16px;
   --button-carousel-button-width: calc((100% - (var(--button-carousel-gap) * 2)) / 4);
-  --button-carousel-shadow-y: clamp(6px, 2.6vw, 15px);
+  --button-carousel-shadow-y: clamp(1px, 1vw, 15px);
   --button-carousel-shadow-blur: clamp(2px, 0.7vw, 4px);
 
   display: flex;
@@ -75,7 +75,7 @@ export const buttonCarouselStyles = `
     0
     var(--button-carousel-shadow-y)
     var(--button-carousel-shadow-blur)
-    rgba(0, 0, 0, 0.25);
+    rgba(0, 0, 0, 0.5);
 
   transform: translateY(0) scale(1);
   transition: box-shadow 320ms ease, transform 320ms ease;
@@ -91,6 +91,28 @@ export const buttonCarouselStyles = `
 
   transform: translateY(clamp(1px, 0.3vw, 3px)) scale(0.97);
 }
+
+  .button-carousel-button--edge-end {
+  aspect-ratio: auto;
+  height: 100%;
+  flex: 0 0 calc(var(--button-carousel-button-width) / 2.1);
+  border-radius: 50px 0px 50px 30px;
+}
+.button-carousel-button--edge-end-end{
+  flex-basis: calc(var(--button-carousel-button-width));
+  }
+
+.button-carousel-button--edge-start {
+  flex-basis: calc(var(--button-carousel-button-width) / 2.1);
+  aspect-ratio: auto;
+  height: 100%;
+
+  flex: 0 0 calc(var(--button-carousel-button-width) / 2.1);
+  border-radius: 0px 50px 30px 50px;
+}
+  .button-carousel-button--edge-start-start {
+  flex-basis: calc(var(--button-carousel-button-width));
+  }
 
 .button-carousel-container::-webkit-scrollbar {
   height: 6px;

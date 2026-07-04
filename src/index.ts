@@ -128,6 +128,8 @@ function createMediaElement(
 /**
  * Mounts an interactive, framework-agnostic button carousel into
  * `options.container`. See README.md for full usage details.
+ * @param options configuration for the carousel instance
+ * @returns an object with methods to control the carousel programmatically
  */
 export function createButtonCarousel(options: ButtonCarouselOptions): ButtonCarouselInstance {
   const { container, items } = options;
@@ -151,6 +153,10 @@ export function createButtonCarousel(options: ButtonCarouselOptions): ButtonCaro
   root.appendChild(wrapper);
 
   const buttons: HTMLButtonElement[] = items.map((item, index) => {
+    if (item === undefined || item === null) {
+      throw new Error(`Invalid item at index ${index}: ${item}`);
+    }
+    console.log(`Creating button for item at index ${index}:`, item);
     const button = document.createElement("button");
     button.type = "button";
     button.className = BUTTON_CLASS;
@@ -172,8 +178,14 @@ export function createButtonCarousel(options: ButtonCarouselOptions): ButtonCaro
     }
 
     wrapper.appendChild(button);
+    console.log(`Button created for item at index ${index}:`, button);
+    console.log("root appended:", container.contains(root));
+    console.log("wrapper children:", wrapper.children.length);
     return button;
   });
+  console.log(buttons)
+  setActive(activeIndex);
+  updateEdgeButtons(activeIndex, buttons);
 
   renderPreview(activeIndex);
   container.appendChild(root);
@@ -201,27 +213,95 @@ export function createButtonCarousel(options: ButtonCarouselOptions): ButtonCaro
       });
     }
   }
-  /**
-   * Centers the button at `index` in the viewport.
-   * @param index the index of the button to center
-   * @returns nothing
-   */
-  function centerButton(index: number): void {
-    const button = buttons[index];
 
-    if (!button) {
-      return;
+  const VISIBLE_BUTTON_COUNT = 5;
+
+  function getVisibleWindowStart(activeIndex: number, buttonCount: number): number {
+    if (buttonCount <= VISIBLE_BUTTON_COUNT) {
+      return 0;
     }
 
-    const targetScrollLeft =
-      button.offsetLeft -
-      wrapper.clientWidth / 2 +
-      button.offsetWidth / 2;
+    const maxStartIndex = buttonCount - VISIBLE_BUTTON_COUNT;
 
-    wrapper.scrollTo({
-      left: targetScrollLeft,
-      behavior: "smooth",
-    });
+    return Math.max(0, Math.min(activeIndex - 2, maxStartIndex));
+  }
+
+  function scrollToFiveButtonWindow(activeIndex: number, behavior: ScrollBehavior = "smooth"): void {
+    if (buttons.length < 5) {
+      console.log("buttons.length < 5, no need to scroll, buttons =", buttons.length);
+      return;
+    }
+    console.log("scrollToFiveButtonWindow called with activeIndex =", activeIndex);
+    console.log("buttons.length =", buttons.length);
+    console.log("Buttons:", buttons.map((btn, idx) => `Index ${idx}: ${btn.className}`));
+
+    const startIndex = getVisibleWindowStart(activeIndex, buttons.length);
+    const endIndex = startIndex + 4;
+
+    const startButton = buttons[startIndex];
+    const endButton = buttons[endIndex];
+
+    if (!startButton || !endButton) {
+      return;
+    }
+    //if the start or end buttons are shown need to scroll to them uniquely
+    if (startIndex === 0 && activeIndex <= 2) {
+      requestAnimationFrame(() => {
+        const wrapperRect = wrapper.getBoundingClientRect();
+        const buttonRect = startButton.getBoundingClientRect();
+        const wrapperStyles = window.getComputedStyle(wrapper);
+        const paddingLeft = parseFloat(wrapperStyles.paddingLeft) || 0;
+
+        const targetScrollLeft =
+          wrapper.scrollLeft +
+          buttonRect.left -
+          wrapperRect.left -
+          paddingLeft;
+
+        wrapper.scrollTo({
+          left: targetScrollLeft,
+          behavior,
+        });
+      });
+    } else {
+      if (endIndex === buttons.length - 1 && activeIndex >= buttons.length - 3) {
+        requestAnimationFrame(() => {
+          const wrapperRect = wrapper.getBoundingClientRect();
+          const buttonRect = endButton.getBoundingClientRect();
+          const wrapperStyles = window.getComputedStyle(wrapper);
+          const paddingRight = parseFloat(wrapperStyles.paddingRight) || 0;
+
+          const targetScrollRight =
+            wrapper.scrollLeft +
+            buttonRect.right -
+            wrapperRect.right +
+            paddingRight;
+
+          wrapper.scrollTo({
+            left: targetScrollRight,
+            behavior,
+          });
+        });
+      } else {
+
+        requestAnimationFrame(() => {
+          const wrapperRect = wrapper.getBoundingClientRect();
+          const startRect = startButton.getBoundingClientRect();
+          const endRect = endButton.getBoundingClientRect();
+
+          const windowCenter = (startRect.left + endRect.right) / 2;
+          const wrapperCenter = (wrapperRect.left + wrapperRect.right) / 2;
+
+          const targetScrollLeft =
+            wrapper.scrollLeft + windowCenter - wrapperCenter;
+
+          wrapper.scrollTo({
+            left: targetScrollLeft,
+            behavior,
+          });
+        });
+      }
+    }
   }
 
   /**
@@ -247,7 +327,10 @@ export function createButtonCarousel(options: ButtonCarouselOptions): ButtonCaro
     }
     renderPreview(activeIndex);
     //centers button to enable scrolling
-    centerButton(activeIndex);
+
+
+    updateEdgeButtons(activeIndex, buttons);
+    scrollToFiveButtonWindow(activeIndex);
   }
 
   let destroyed = false;
@@ -278,6 +361,54 @@ export function createButtonCarousel(options: ButtonCarouselOptions): ButtonCaro
 
 
 
+}
+
+function updateEdgeButtons(activeIndex: number, buttons: HTMLButtonElement[]): void {
+  buttons.forEach((button) => {
+    button.classList.remove(
+      "button-carousel-button--edge",
+      "button-carousel-button--edge-start",
+      "button-carousel-button--edge-end",
+      "button-carousel-button--edge-start-start",
+      "button-carousel-button--edge-end-end"
+    );
+  });
+
+  if (buttons.length < 5) {
+    return;
+  }
+
+  const maxStartIndex = buttons.length - 5;
+  const startIndex = Math.max(0, Math.min(activeIndex - 2, maxStartIndex));
+  const endIndex = startIndex + 4;
+
+  const startButton = buttons[startIndex];
+  const endButton = buttons[endIndex];
+
+  if (startIndex != 0) {
+    startButton.classList.add(
+      "button-carousel-button--edge",
+      "button-carousel-button--edge-start"
+    );
+  }
+
+  if (endIndex != buttons.length - 1) {
+    endButton.classList.add(
+      "button-carousel-button--edge",
+      "button-carousel-button--edge-end"
+    );
+  }
+
+  if (startIndex === 0) {
+
+    buttons[endIndex - 1].classList.add("button-carousel-button--edge-end-end");
+    buttons[endIndex - 1].classList.add("button-carousel-button--edge-end");
+  }
+
+  if (endIndex === buttons.length - 1) {
+    buttons[startIndex + 1].classList.add("button-carousel-button--edge-start-start");
+    buttons[startIndex + 1].classList.add("button-carousel-button--edge-start");
+  }
 }
 
 
