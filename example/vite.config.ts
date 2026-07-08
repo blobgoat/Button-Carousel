@@ -5,6 +5,8 @@ import { fileURLToPath, URL } from "node:url";
 // example always exercises the current in-repo implementation with no
 // separate build/link step required during development.
 export default defineConfig({
+  base: "/Button-Carousel/",
+
   resolve: {
     alias: {
       "button-carousel": fileURLToPath(new URL("../src/index.ts", import.meta.url)),
