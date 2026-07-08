@@ -141,3 +141,6 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Auto-generated from src/style.css by scripts/generate-css.mjs
+src/generated-style.ts

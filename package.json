@@ -27,12 +27,13 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --dts --out-dir dist --clean && node -e \"require('fs').copyFileSync('src/style.css','dist/index.css')\" && gulp styles",
-    "dev": "tsup src/index.ts --format esm,cjs --dts --out-dir dist --watch",
-    "typecheck": "tsc --noEmit -p tsconfig.app.json",
-    "example:dev": "npm --prefix example run dev",
-    "example:build": "npm --prefix example run build",
-    "test": "vitest run --config vitest.config.ts"
+    "generate:css": "node scripts/generate-css.mjs",
+    "build": "npm run generate:css && tsup src/index.ts --format esm,cjs --dts --out-dir dist --clean && node -e \"require('fs').copyFileSync('src/style.css','dist/index.css')\" && gulp styles",
+    "dev": "npm run generate:css && tsup src/index.ts --format esm,cjs --dts --out-dir dist --watch",
+    "typecheck": "npm run generate:css && tsc --noEmit -p tsconfig.app.json",
+    "example:dev": "npm run generate:css && npm --prefix example run dev",
+    "example:build": "npm run generate:css && npm --prefix example run build",
+    "test": "npm run generate:css && vitest run --config vitest.config.ts"
   },
   "devDependencies": {
     "esbuild": "^0.28.1",
