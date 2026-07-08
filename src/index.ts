@@ -71,7 +71,7 @@ function injectStyles(): void {
   const styleEl = document.createElement("style");
   styleEl.id = BUTTON_CAROUSEL_STYLE_ID;
   styleEl.textContent = buttonCarouselStyles;
-  console.log(buttonCarouselStyles);
+  // console.log(buttonCarouselStyles);
   document.head.appendChild(styleEl);
 }
 
@@ -200,7 +200,7 @@ export function createButtonCarousel(options: ButtonCarouselOptions): ButtonCaro
     if (item === undefined || item === null) {
       throw new Error(`Invalid item at index ${index}: ${item}`);
     }
-    console.log(`Creating button for item at index ${index}:`, item);
+    //console.log(`Creating button for item at index ${index}:`, item);
     const button: HTMLButtonElement = document.createElement("button");
     button.type = "button";
     button.className = BUTTON_CLASS;
@@ -276,12 +276,12 @@ export function createButtonCarousel(options: ButtonCarouselOptions): ButtonCaro
 
   function scrollToFiveButtonWindow(activeIndex: number, behavior: ScrollBehavior = "smooth"): void {
     if (buttons.length < 5) {
-      console.log("buttons.length < 5, no need to scroll, buttons =", buttons.length);
+      //console.log("buttons.length < 5, no need to scroll, buttons =", buttons.length);
       return;
     }
-    console.log("scrollToFiveButtonWindow called with activeIndex =", activeIndex);
-    console.log("buttons.length =", buttons.length);
-    console.log("Buttons:", buttons.map((btn, idx) => `Index ${idx}: ${btn.className}`));
+    //console.log("scrollToFiveButtonWindow called with activeIndex =", activeIndex);
+    //console.log("buttons.length =", buttons.length);
+    //console.log("Buttons:", buttons.map((btn, idx) => `Index ${idx}: ${btn.className}`));
 
     const startIndex = getVisibleWindowStart(activeIndex, buttons.length);
     const endIndex = startIndex + 4;
