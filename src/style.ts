@@ -5,7 +5,7 @@
  * with consumer styles. The stylesheet is injected once per page via
  * `createButtonCarousel` (see src/index.ts), guarded by `BUTTON_CAROUSEL_STYLE_ID`.
  */
-import style from "./style.css?raw";
+import style from "./style.css";
 export const BUTTON_CAROUSEL_STYLE_ID = "button-carousel-styles";
 
 export const buttonCarouselStyles: string = style;

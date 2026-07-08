@@ -1,6 +1,6 @@
 {
   "name": "button-carousel",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A lightweight, framework-agnostic button carousel for images, GIFs, and videos.",
   "type": "module",
   "license": "MIT",
@@ -27,7 +27,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --dts --out-dir dist --clean && gulp styles",
+    "build": "tsup src/index.ts --format esm,cjs --dts --out-dir dist --clean && node -e \"require('fs').copyFileSync('src/style.css','dist/index.css')\" && gulp styles",
     "dev": "tsup src/index.ts --format esm,cjs --dts --out-dir dist --watch",
     "typecheck": "tsc --noEmit -p tsconfig.app.json",
     "example:dev": "npm --prefix example run dev",
