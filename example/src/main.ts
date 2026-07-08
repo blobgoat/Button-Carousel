@@ -20,7 +20,7 @@ function gif(seed = "earth"): ButtonCarouselItem {
 }
 
 function video(seed = "flower"): ButtonCarouselItem {
-  return { type: "video", src: VIDEO_SRC, poster: VIDEO_POSTER, alt: `${seed} video` };
+  return { type: "video", src: VIDEO_SRC, poster: VIDEO_POSTER, alt: `${seed} video`, start: 0, end: 1 };
 }
 
 function tenMixedItems(): ButtonCarouselItem[] {

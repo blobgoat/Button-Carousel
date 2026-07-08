@@ -1,0 +1,146 @@
+.button-carousel-root {
+    width: min(720px, 100cqw, 100cqh);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.button-carousel-preview {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 28px;
+    overflow: hidden;
+    background: #111;
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.22);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-carousel-preview-media {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+
+.button-carousel-container {
+    --button-carousel-gap: 16px;
+    --button-carousel-button-width: calc((100% - (var(--button-carousel-gap) * 2)) / 4);
+    --button-carousel-shadow-y: clamp(1px, 1cqw, 15px);
+    --button-carousel-shadow-blur: clamp(2px, 0.7cqw, 4px);
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    gap: var(--button-carousel-gap);
+    width: 100%;
+    padding: 8px 16px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    list-style: none;
+}
+
+.button-carousel-button {
+    position: relative;
+    flex: 0 0 var(--button-carousel-button-width);
+    aspect-ratio: 1.2 / 1;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-radius: 999px;
+    overflow: hidden;
+    cursor: pointer;
+    background-color: transparent;
+
+    box-shadow:
+        0 var(--button-carousel-shadow-y) var(--button-carousel-shadow-blur) rgba(0, 0, 0, 0.5);
+
+    transform: translateY(0) scale(1);
+    transition: box-shadow 320ms ease, transform 320ms ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.button-carousel-button--active {
+    box-shadow:
+        inset 0 var(--button-carousel-shadow-y) var(--button-carousel-shadow-blur) rgba(0, 0, 0, 0.25);
+
+    transform: translateY(clamp(1px, 0.3cqh, 3px)) scale(0.97);
+}
+
+.button-carousel-button:hover {
+    box-shadow:
+        0 var(--button-carousel-shadow-y) var(--button-carousel-shadow-blur) rgba(0, 0, 0, 0.75);
+
+    transform: translateY(clamp(1px, 0.3cqh, 3px)) scale(1.02);
+}
+
+.button-carousel-button--edge-end {
+    aspect-ratio: auto;
+    height: 100%;
+    flex: 0 0 calc(var(--button-carousel-button-width) / 2.1);
+    border-radius: 50px 0px 50px 30px;
+}
+
+.button-carousel-button--edge-end-end {
+    flex-basis: calc(var(--button-carousel-button-width));
+    border-radius: 1000px 0px 1000px 60px;
+}
+
+.button-carousel-button--edge-start {
+    flex-basis: calc(var(--button-carousel-button-width) / 2.1);
+    aspect-ratio: auto;
+    height: 100%;
+
+    flex: 0 0 calc(var(--button-carousel-button-width) / 2.1);
+    border-radius: 0px 50px 30px 50px;
+}
+
+.button-carousel-button--edge-start-start {
+    flex-basis: calc(var(--button-carousel-button-width));
+    border-radius: 0px 1000px 60px 1000px;
+
+}
+
+.button-carousel-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.button-carousel-container::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 999px;
+}
+
+.button-carousel-button:focus-visible {
+    outline: 3px solid rgba(59, 130, 246, 0.6);
+    outline-offset: 3px;
+}
+
+.button-carousel-media {
+    display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 1;
+    transition: opacity 320ms ease;
+    pointer-events: none;
+}
+
+.button-carousel-button--active .button-carousel-media {
+    opacity: 0.5;
+}
+
+@media (max-width: 640px) {
+    .button-carousel-container {
+        --button-carousel-gap: 10px;
+        padding: 6px 12px;
+    }
+}

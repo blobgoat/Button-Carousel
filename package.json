@@ -36,6 +36,8 @@
   },
   "devDependencies": {
     "esbuild": "^0.28.1",
+    "gulp": "^5.0.1",
+    "gulp-autoprefixer": "^10.0.0",
     "happy-dom": "^20.10.6",
     "tsup": "^8.5.1",
     "typescript": "^5.7.2",

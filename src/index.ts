@@ -23,6 +23,10 @@ export type ButtonCarouselItem =
     src: string;
     alt?: string;
     poster?: string;
+    start?: number;
+    end?: number;
+    pStart?: number;
+    pEnd?: number;
   };
 
 /**
@@ -67,6 +71,7 @@ function injectStyles(): void {
   const styleEl = document.createElement("style");
   styleEl.id = BUTTON_CAROUSEL_STYLE_ID;
   styleEl.textContent = buttonCarouselStyles;
+  console.log(buttonCarouselStyles);
   document.head.appendChild(styleEl);
 }
 
@@ -94,16 +99,19 @@ function clampIndex(index: number, length: number): number {
 
 function createMediaElement(
   item: ButtonCarouselItem,
-  className: string = MEDIA_CLASS
+  className: string = MEDIA_CLASS, preview: boolean = false
 ): HTMLImageElement | HTMLVideoElement {
   if (item.type === "video") {
     const video: HTMLVideoElement = document.createElement("video");
     video.className = className;
     video.src = item.src;
     video.muted = true;
-    video.loop = true;
+    //.loop doesnt work
     video.autoplay = true;
     video.playsInline = true;
+    const loopStart: number = preview ? (item.pStart ?? 0) : (item.start ?? 0);
+    const loopEnd: number = preview ? (item.pEnd ?? video.duration) : (item.end ?? video.duration);
+
 
     video.setAttribute("muted", "");
     video.setAttribute("loop", "");
@@ -117,6 +125,37 @@ function createMediaElement(
     if (item.alt) {
       video.setAttribute("aria-label", item.alt);
     }
+
+    video.addEventListener("loadedmetadata", () => {
+      const safeStart = Math.max(0, loopStart);
+      const safeEnd = loopEnd ?? video.duration;
+
+      if (safeStart < safeEnd) {
+        video.currentTime = safeStart;
+      }
+    });
+
+    video.addEventListener("timeupdate", () => {
+      const safeStart = Math.max(0, loopStart);
+      const safeEnd = loopEnd ?? video.duration;
+
+      if (safeStart >= safeEnd) {
+        return;
+      }
+
+      if (video.currentTime >= safeEnd) {
+        video.currentTime = safeStart;
+        video.play().catch(() => {
+          // Autoplay/playback may fail in some browsers.
+        });
+      }
+    });
+
+    video.addEventListener("ended", () => {
+      const safeStart = Math.max(0, loopStart);
+      video.currentTime = safeStart;
+      video.play().catch(() => { });
+    });
 
     return video;
   }
@@ -213,7 +252,7 @@ export function createButtonCarousel(options: ButtonCarouselOptions): ButtonCaro
       return;
     }
 
-    const previewMedia: HTMLImageElement | HTMLVideoElement = createMediaElement(item, PREVIEW_MEDIA_CLASS);
+    const previewMedia: HTMLImageElement | HTMLVideoElement = createMediaElement(item, PREVIEW_MEDIA_CLASS, true);
     preview.appendChild(previewMedia);
 
     if (previewMedia instanceof HTMLVideoElement) {

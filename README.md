@@ -4,6 +4,15 @@ A lightweight, framework-agnostic button carousel for images, GIFs, and videos. 
 
 `button-carousel` has no dependencies, works with plain DOM APIs, and doesn't require React, Vue, or any other framework.
 
+## What it looks like
+
+
+![Default carousel layout: preview panel above a row of pill buttons, with edge buttons partially clipped](./assets/screenshot-default.svg)
+
+Clicking a button makes it active — its media dims and its shadow moves inward for a "pressed in" look, while inactive buttons keep a raised outer shadow:
+
+![Active vs. inactive button state comparison](./assets/screenshot-active-state.svg)
+
 ## Installation
 
 ```bash
@@ -20,7 +29,7 @@ const carousel = createButtonCarousel({
   items: [
     { type: "image", src: "/assets/image-1.jpg", alt: "Example image" },
     { type: "gif", src: "/assets/demo.gif", alt: "Example gif" },
-    { type: "video", src: "/assets/demo.mp4", alt: "Example video" },
+    { type: "video", src: "/assets/demo.mp4", alt: "Example video", start:0, end:5 },
   ],
   initialIndex: 0,
 });
@@ -56,10 +65,12 @@ GIF items render with an `<img>`, same as images.
 ### Video
 
 ```ts
-{ type: "video", src: "/assets/demo.mp4", alt: "A looping video", poster: "/assets/poster.jpg" }
+{ type: "video", src: "/assets/demo.mp4", alt: "A looping video", poster: "/assets/poster.jpg", start:0, end:2 }
 ```
 
-Video items render with a `<video muted loop playsInline autoplay>`, so they behave like an animated GIF replacement — no play controls, no sound.
+Video items render with a `<video muted loop playsInline autoplay>`, so they behave like an animated GIF replacement.
+
+In addition you can set a custom start and ending frame by inputting the value in seconds, if not inputted it defaults to the whole video.
 
 ## Active / pressed visual state
 
@@ -70,6 +81,17 @@ Clicking a button makes it the active, selected button — only one button is ev
 - inactive buttons keep an outer drop shadow and full opacity
 
 Moving the selection between buttons transitions smoothly rather than snapping instantly.
+
+## Preview panel
+
+Above the row of buttons, `button-carousel` renders a larger 16:9 preview of whichever item is currently active. The preview updates automatically whenever the active button changes (via click, `goTo`, `next`, or `previous`), and video previews are (re)played automatically when they become active.
+
+## Scrolling
+
+- scrolling only works from pushing buttons
+- <5 items: the buttons are centered in the container, no scrolling necessary.
+- With 5 or more items, at the very beginning and end 4 items are shown with a deformed pill shape hinting that there is more. If it is inbetween the beginning and end, 5 buttons are visible at a time with ovals on either end indicating there are more images in either direction. 
+- Selecting an item near either end of the list smoothly scrolls the button row so the active button stays in view. 
 
 ## API options
 
@@ -103,7 +125,7 @@ Moving the selection between buttons transitions smoothly rather than snapping i
 
 ## Example project
 
-The `example/` folder contains a small Vite app demonstrating every mode — images only, a single image, a single video, a single GIF, mixed media, and a 10-item mixed carousel. It imports the package directly from `src/` via a Vite alias, so changes to the package source are reflected immediately during development:
+The `example/` folder contains a small Vite app demonstrating every mode: images only, a single image, a single video, a single GIF, mixed media, a 10-item mixed carousel that exercises the scrolling window described above, and dedicated 4/5/6-image sections showing the centered vs. windowed layouts side by side. It imports the package directly from `src/` via a Vite alias, so changes to the package source are reflected immediately during development:
 
 ```bash
 npm run example:dev
