@@ -27,7 +27,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --dts --out-dir dist --clean",
+    "build": "tsup src/index.ts --format esm,cjs --dts --out-dir dist --clean && gulp styles",
     "dev": "tsup src/index.ts --format esm,cjs --dts --out-dir dist --watch",
     "typecheck": "tsc --noEmit -p tsconfig.app.json",
     "example:dev": "npm --prefix example run dev",
