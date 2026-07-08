@@ -7,11 +7,15 @@ A lightweight, framework-agnostic button carousel for images, GIFs, and videos. 
 ## What it looks like
 
 Clicking a button makes it active — its media dims and its shadow moves inward for a "pressed in" look, while inactive buttons keep a raised outer shadow. In addition when a button activates it scrolls to that button allowing the user to traverse the different images intutively
-![A carrousel that is navigatable by clicking buttons is shown](./assets/goingThroughMedia.gif)
+<img
+  src="https://github.com/blobgoat/Button-Carousel/blob/main/assets/goingThroughMedia.gif?raw=true"
+  alt="A carrousel that is navigatable by clicking buttons is shown"
+  width="700"
+/>
 
 
 Due to using Flex properties it easily and intuitively fits onto a phone screen or a narrower container
-![Navigating the carousel using the phone interface](./assets/phoneScreen.gif)
+![Navigating the carousel using the phone interface](https://github.com/blobgoat/Button-Carousel/blob/main/assets/phoneScreen.gif?raw=true)
 
 ## Installation
 
@@ -131,4 +135,4 @@ The `example/` folder contains a small Vite app demonstrating every mode: images
 npm run example:dev
 ```
 
-![A gif showing all the example which are shown on the example website](./assets/scrollingExamples.gif)s
+![A gif showing all the example which are shown on the example website](https://github.com/blobgoat/Button-Carousel/blob/main/assets/scrollingExamples.gif?raw=true)
