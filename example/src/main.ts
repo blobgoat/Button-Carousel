@@ -1,4 +1,5 @@
 import { createButtonCarousel, type ButtonCarouselItem } from "button-carousel";
+const phoneScreenGif = new URL("../assets/phoneScreen.gif", import.meta.url).href;
 
 // Public, freely-usable demo assets — no local binaries required.
 const IMAGE_SEEDS = ["sunset", "forest", "harbor", "canyon", "orchid", "glacier", "lagoon"];
@@ -15,8 +16,8 @@ const GIF_SRC: string = "https://upload.wikimedia.org/wikipedia/commons/2/2c/Rot
 const VIDEO_SRC: string = "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4";
 const VIDEO_POSTER: string = "https://picsum.photos/seed/flower-poster/400/300";
 
-function gif(seed = "earth"): ButtonCarouselItem {
-  return { type: "gif", src: GIF_SRC, alt: `${seed} gif` };
+function gif(seed = "earth", src = GIF_SRC): ButtonCarouselItem {
+  return { type: "gif", src: src, alt: `${seed} gif` };
 }
 
 function video(seed = "flower"): ButtonCarouselItem {
@@ -60,7 +61,7 @@ const sections: SectionConfig[] = [
   {
     title: "Single GIF",
     description: "A carousel containing exactly 1 GIF.",
-    items: [gif("single-gif")],
+    items: [gif("single-gif", phoneScreenGif)],
   },
   {
     title: "Mixed Media",

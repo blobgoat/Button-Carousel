@@ -7,8 +7,7 @@
 }
 
 .button-carousel-preview {
-    width: 100%;
-    aspect-ratio: 16 / 9;
+    height: clamp(220px, 55cqw, 420px);
     border-radius: 28px;
     overflow: hidden;
     background: #111;
@@ -44,6 +43,7 @@
     overflow-x: hidden;
     scroll-behavior: smooth;
     list-style: none;
+    scroll-margin: none;
 }
 
 .button-carousel-button {

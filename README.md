@@ -88,7 +88,7 @@ Moving the selection between buttons transitions smoothly rather than snapping i
 
 ## Preview panel
 
-Above the row of buttons, `button-carousel` renders a larger 16:9 preview of whichever item is currently active. The preview updates automatically whenever the active button changes (via click, `goTo`, `next`, or `previous`), and video previews are (re)played automatically when they become active.
+Above the row of buttons, `button-carousel` renders a larger preview of whichever item is currently active. The preview panel automatically resizes to match that media's actual aspect ratio (falling back to 16:9 until its natural dimensions are known), so tall media like phone screenshots is shown at its real proportions instead of being cropped or awkwardly zoomed into a fixed 16:9 box. The preview updates automatically whenever the active button changes (via click, `goTo`, `next`, or `previous`), and video previews are (re)played automatically when they become active.
 
 ## Scrolling
 

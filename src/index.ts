@@ -65,13 +65,18 @@ const PREVIEW_MEDIA_CLASS: string = "button-carousel-preview-media";
  * document, regardless of how many carousel instances are created.
  */
 function injectStyles(): void {
-  if (document.getElementById(BUTTON_CAROUSEL_STYLE_ID)) {
+  const existingStyle = document.getElementById(
+    BUTTON_CAROUSEL_STYLE_ID
+  ) as HTMLStyleElement | null;
+
+  if (existingStyle) {
+    existingStyle.textContent = buttonCarouselStyles;
     return;
   }
+
   const styleEl = document.createElement("style");
   styleEl.id = BUTTON_CAROUSEL_STYLE_ID;
   styleEl.textContent = buttonCarouselStyles;
-  // console.log(buttonCarouselStyles);
   document.head.appendChild(styleEl);
 }
 
@@ -412,6 +417,7 @@ export function createButtonCarousel(options: ButtonCarouselOptions): ButtonCaro
 }
 
 function updateEdgeButtons(activeIndex: number, buttons: HTMLButtonElement[]): void {
+  console.log("updateEdgeButtons called with activeIndex =", activeIndex);
   buttons.forEach((button) => {
     button.classList.remove(
       "button-carousel-button--edge",
@@ -425,6 +431,7 @@ function updateEdgeButtons(activeIndex: number, buttons: HTMLButtonElement[]): v
   if (buttons.length < 5) {
     return;
   }
+  console.log("buttons.length >= 5, calculating edge buttons");
 
   const maxStartIndex = buttons.length - 5;
   const startIndex = Math.max(0, Math.min(activeIndex - 2, maxStartIndex));
@@ -434,6 +441,7 @@ function updateEdgeButtons(activeIndex: number, buttons: HTMLButtonElement[]): v
   const endButton = buttons[endIndex];
 
   if (startIndex != 0) {
+    console.log("Adding edge classes to start button at index", startIndex);
     startButton.classList.add(
       "button-carousel-button--edge",
       "button-carousel-button--edge-start"
@@ -441,6 +449,7 @@ function updateEdgeButtons(activeIndex: number, buttons: HTMLButtonElement[]): v
   }
 
   if (endIndex != buttons.length - 1) {
+    console.log("Adding edge classes to end button at index", endIndex);
     endButton.classList.add(
       "button-carousel-button--edge",
       "button-carousel-button--edge-end"
@@ -450,13 +459,14 @@ function updateEdgeButtons(activeIndex: number, buttons: HTMLButtonElement[]): v
   //we also simultaneously know that the start button is visible
   //Scrolling behavior prioritizes the start button according to implementation (scroll checks beginning first) unable to change it to make it obvious
   if (startIndex === 0 && activeIndex <= 2) {
-
+    console.log("Adding edge classes to end button at index", endIndex - 1);
     buttons[endIndex - 1].classList.add("button-carousel-button--edge-end-end");
     buttons[endIndex - 1].classList.add("button-carousel-button--edge-end");
   }
   //if the active index is greater than 2 it guarentees that the start button is not visible Meaning we can't transform the start button
   //if the active index is less than buttons.length - 3 it guarentees that the end button is visible
   if (endIndex === buttons.length - 1 && activeIndex >= buttons.length - 3 && activeIndex > 2) {
+    console.log("Adding edge classes to start button at index", startIndex + 1);
     buttons[startIndex + 1].classList.add("button-carousel-button--edge-start-start");
     buttons[startIndex + 1].classList.add("button-carousel-button--edge-start");
   }
