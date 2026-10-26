@@ -76,6 +76,31 @@ Video items render with a `<video muted loop playsInline autoplay>`, so they beh
 
 In addition you can set a custom start and ending frame by inputting the value in seconds, if not inputted it defaults to the whole video.
 
+### Image credits / attribution
+
+Any item can take an optional `credit`, shown under the media when it's opened full screen (by clicking the preview or the already-selected button). Pass a plain string, or an object to add links:
+
+```ts
+{ type: "image", src: "/assets/photo.jpg", alt: "A photo", credit: "Photo by Jane Doe" }
+
+{
+  type: "image",
+  src: "/assets/photo.jpg",
+  alt: "A photo",
+  credit: {
+    text: "Photo by Jane Doe on Unsplash",
+    href: "https://unsplash.com/photos/abc123",
+    license: "CC BY 4.0",
+    licenseHref: "https://creativecommons.org/licenses/by/4.0/",
+    blurb: "Taken at Pier 39, San Francisco, 2024. Cropped and color-corrected.",
+  },
+}
+```
+
+In the full-screen view, items with a credit show a small "i" in the image's corner. Clicking the image (or pressing Enter/Space when it's focused) opens a details panel over the image with the attribution text, the `blurb`, the license and a link to the source. Click again or press Esc to hide it; a second Esc closes the full-screen view. Line breaks in `blurb` are kept.
+
+Links open in a new tab. Credit text is always inserted as plain text, never as HTML. Items without a `credit` show no caption.
+
 ## Active / pressed visual state
 
 Clicking a button makes it the active, selected button — only one button is ever active at a time. When active:

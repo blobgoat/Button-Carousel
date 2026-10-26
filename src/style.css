@@ -1,20 +1,49 @@
 .button-carousel-root {
-    width: min(720px, 100cqw, 100cqh);
+    /* Size to the element it's mounted in (never wider than it), capped at
+       720px and at the viewport height so the whole carousel (preview +
+       buttons) stays on screen in short windows. The root is also the size
+       container for the cq units used below, so they measure the carousel
+       itself rather than falling back to the viewport. */
+    width: 100%;
+    max-width: min(720px, 100vh);
+    max-width: min(720px, 100svh);
+    min-width: 0;
+    box-sizing: border-box;
+    container-type: inline-size;
     display: flex;
     flex-direction: column;
     align-items: center;
 
 }
 
+.button-carousel-root--single .button-carousel-container {
+    display: none;
+}
+
 .button-carousel-preview {
+    max-width: 100%;
     height: clamp(220px, 55cqw, 420px);
     border-radius: 28px;
     overflow: hidden;
     background: #111;
     box-shadow: 0 18px 36px rgba(0, 0, 0, 0.22);
+    transition: border-radius 320ms ease, background-color 320ms ease, box-shadow 320ms ease;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.button-carousel-preview {
+    cursor: zoom-in;
+}
+
+.button-carousel-preview:focus-visible {
+    outline: 3px solid rgba(59, 130, 246, 0.6);
+    outline-offset: 3px;
+}
+
+.button-carousel-button--active:not([class*="button-carousel-button--edge"]) {
+    cursor: zoom-in;
 }
 
 .button-carousel-preview-media {
@@ -22,6 +51,23 @@
     height: 100%;
     object-fit: cover;
     display: block;
+}
+
+/* Hover: drop the crop on the main image and show the whole thing.
+   The frame (rounded corners, dark fill, shadow) goes away so there are no
+   corner cuts or letterbox bars; the shadow moves onto the image itself. */
+@media (hover: hover) {
+    .button-carousel-preview:hover {
+        border-radius: 0;
+        background-color: transparent;
+        box-shadow: none;
+        overflow: visible;
+    }
+
+    .button-carousel-preview:hover .button-carousel-preview-media {
+        object-fit: contain;
+        filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.22));
+    }
 }
 
 
@@ -143,5 +189,239 @@
     .button-carousel-container {
         --button-carousel-gap: 10px;
         padding: 6px 12px;
+    }
+}
+
+/* Lightbox: focused, uncropped view with the page blurred behind it. */
+.button-carousel-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    --button-carousel-lightbox-pad: clamp(16px, 4vmin, 48px);
+    --button-carousel-lightbox-credit-space: 0px;
+    padding: var(--button-carousel-lightbox-pad);
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.45);
+    -webkit-backdrop-filter: blur(0px);
+    backdrop-filter: blur(0px);
+    opacity: 0;
+    cursor: zoom-out;
+    transition: opacity 250ms ease, backdrop-filter 250ms ease, -webkit-backdrop-filter 250ms ease;
+}
+
+.button-carousel-lightbox--open {
+    opacity: 1;
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+}
+
+.button-carousel-lightbox-figure {
+    margin: 0;
+    max-width: 100%;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Leave room under the media for the attribution line. */
+.button-carousel-lightbox-figure--credited {
+    --button-carousel-lightbox-credit-space: 64px;
+}
+
+/* Wraps the lightbox media so the attribution details can overlay it. */
+.button-carousel-lightbox-stage {
+    position: relative;
+    max-width: 100%;
+    line-height: 0;
+    border-radius: 12px;
+    cursor: default;
+}
+
+.button-carousel-lightbox-stage--interactive {
+    cursor: pointer;
+}
+
+.button-carousel-lightbox-stage:focus-visible {
+    outline: 3px solid rgba(147, 197, 253, 0.9);
+    outline-offset: 4px;
+}
+
+/* Small "i" hint in the corner showing the image can be clicked for details. */
+.button-carousel-lightbox-info {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 26px;
+    height: 26px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font: italic 600 15px/26px Georgia, "Times New Roman", serif;
+    text-align: center;
+    pointer-events: none;
+    transition: opacity 200ms ease;
+}
+
+.button-carousel-lightbox-stage--details-open .button-carousel-lightbox-info {
+    opacity: 0;
+}
+
+/* Attribution details panel, slides up over the bottom of the media. */
+.button-carousel-lightbox-details {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding: 16px 20px 18px;
+    border-radius: 0 0 12px 12px;
+    background: rgba(12, 12, 14, 0.78);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    color: rgba(255, 255, 255, 0.92);
+    font: 14px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    text-align: left;
+    cursor: default;
+    opacity: 0;
+    transform: translateY(12px);
+    visibility: hidden;
+    transition: opacity 220ms ease, transform 220ms ease, visibility 0s linear 220ms;
+}
+
+.button-carousel-lightbox-stage--details-open .button-carousel-lightbox-details {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+    transition: opacity 220ms ease, transform 220ms ease, visibility 0s;
+}
+
+.button-carousel-lightbox-details p {
+    margin: 0;
+}
+
+.button-carousel-lightbox-details p + p {
+    margin-top: 8px;
+}
+
+.button-carousel-lightbox-details-heading {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.button-carousel-lightbox-details-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.button-carousel-lightbox-details-blurb {
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+}
+
+.button-carousel-lightbox-details-license,
+.button-carousel-lightbox-details-source {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.button-carousel-lightbox-details a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.button-carousel-lightbox-details a:hover {
+    color: #fff;
+}
+
+.button-carousel-lightbox-details a:focus-visible {
+    outline: 2px solid rgba(147, 197, 253, 0.9);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+.button-carousel-lightbox-media {
+    display: block;
+    max-width: 100%;
+    max-height: calc(100vh - (var(--button-carousel-lightbox-pad) * 2) - var(--button-carousel-lightbox-credit-space));
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 12px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+    cursor: default;
+    transform: scale(0.96);
+    transition: transform 250ms ease;
+}
+
+.button-carousel-lightbox--open .button-carousel-lightbox-media {
+    transform: scale(1);
+}
+
+.button-carousel-lightbox-credit {
+    max-width: min(100%, 70ch);
+    padding: 8px 14px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.55);
+    color: rgba(255, 255, 255, 0.92);
+    font: 13px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    text-align: center;
+    cursor: default;
+    overflow-wrap: anywhere;
+}
+
+.button-carousel-lightbox-credit a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.button-carousel-lightbox-credit a:hover {
+    color: #fff;
+}
+
+.button-carousel-lightbox-credit a:focus-visible {
+    outline: 2px solid rgba(147, 197, 253, 0.9);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+.button-carousel-lightbox-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #111;
+    font-size: 26px;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.button-carousel-lightbox-close:focus-visible {
+    outline: 3px solid rgba(59, 130, 246, 0.8);
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .button-carousel-lightbox,
+    .button-carousel-lightbox-media,
+    .button-carousel-lightbox-details {
+        transition: none;
     }
 }
